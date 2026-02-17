@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CardData } from '../types';
 import { downloadVcf } from '../utils/vcfGenerator';
 
@@ -9,6 +10,7 @@ interface CardPreviewProps {
 }
 
 export const CardPreview: React.FC<CardPreviewProps> = ({ data, isStandalone = false }) => {
+  const navigate = useNavigate();
   const containerClass = isStandalone 
     ? "w-full min-h-screen bg-white" 
     : "relative mx-auto w-full max-w-[320px] aspect-[9/18.5] bg-gray-900 rounded-[3rem] p-3 shadow-2xl border-4 border-gray-800";
@@ -125,7 +127,10 @@ export const CardPreview: React.FC<CardPreviewProps> = ({ data, isStandalone = f
             <span className="text-[10px] font-bold text-indigo-600">TheCard</span>
            </div>
            {isStandalone && (
-             <button className="mt-2 text-xs font-bold text-indigo-600 bg-white border border-indigo-100 px-4 py-2 rounded-full shadow-sm">
+             <button 
+               onClick={() => navigate('/')}
+               className="mt-2 text-xs font-bold text-indigo-600 bg-white border border-indigo-100 px-4 py-2 rounded-full shadow-sm"
+             >
                 Create Your Own Card
              </button>
            )}

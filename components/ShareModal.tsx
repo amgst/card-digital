@@ -10,7 +10,8 @@ interface ShareModalProps {
 export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, slug }) => {
   if (!isOpen) return null;
 
-  const fullUrl = `${window.location.host}/card/${slug}`;
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  const fullUrl = `${origin}/card/${slug}`;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
@@ -41,7 +42,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, slug })
           <div className="space-y-3">
             <button 
               onClick={() => {
-                navigator.clipboard.writeText(`https://${fullUrl}`);
+                navigator.clipboard.writeText(fullUrl);
                 alert("Link copied to clipboard!");
               }}
               className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold hover:bg-indigo-700 transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-100"
@@ -49,7 +50,14 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, slug })
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
               Copy Link
             </button>
-            <button className="w-full border border-gray-200 text-gray-700 py-4 rounded-2xl font-bold hover:bg-gray-50 transition">
+            <button 
+              onClick={() => {
+                const text = `Check out my digital card: ${fullUrl}`;
+                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+              }}
+              className="w-full border border-gray-200 text-gray-700 py-4 rounded-2xl font-bold hover:bg-gray-50 transition"
+            >
               Share via WhatsApp
             </button>
           </div>

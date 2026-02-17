@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CardPreview } from '../components/CardPreview';
 import { ShareModal } from '../components/ShareModal';
@@ -10,6 +11,8 @@ import { doc, setDoc } from 'firebase/firestore';
 
 const CardBuilder: React.FC = () => {
   const hasGeminiKey = !!process.env.GEMINI_API_KEY;
+  const navigate = useNavigate();
+  const baseHost = typeof window !== 'undefined' ? window.location.host : 'your-domain.com';
   const [cardData, setCardData] = useState<CardData>(DEFAULT_CARD_DATA);
   const [isGeneratingBio, setIsGeneratingBio] = useState(false);
   const [activeTab, setActiveTab] = useState<'content' | 'design' | 'social'>('content');
@@ -77,6 +80,14 @@ const CardBuilder: React.FC = () => {
     }
   };
 
+  const handleViewPublic = () => {
+    if (!cardData.slug) {
+      alert("Please enter a custom link (slug) first, then publish your card.");
+      return;
+    }
+    navigate(`/card/${cardData.slug}`);
+  };
+
   if (viewMode === 'public') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-0 md:p-8">
@@ -105,11 +116,11 @@ const CardBuilder: React.FC = () => {
               <span className="text-indigo-600">Digital Identity</span>
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-              Create a custom link at <span className="font-bold text-indigo-600">wbify.com/card/</span> and start networking better.
+              Create a custom link at <span className="font-bold text-indigo-600">{baseHost}/card/</span> and start networking better.
             </p>
             <div className="flex justify-center gap-4">
                <button 
-                onClick={() => setViewMode('public')}
+                onClick={handleViewPublic}
                 className="bg-white border-2 border-indigo-600 text-indigo-600 px-10 py-4 rounded-2xl font-bold hover:bg-indigo-50 transition shadow-sm flex items-center gap-2"
                >
                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -154,7 +165,7 @@ const CardBuilder: React.FC = () => {
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Custom Card Link</label>
                         <div className="flex items-stretch shadow-sm">
                            <div className="bg-gray-100 border border-gray-200 border-r-0 rounded-l-2xl flex items-center px-4 text-sm font-bold text-gray-500 select-none">
-                              wbify.com/card/
+                              {baseHost}/card/
                            </div>
                            <input 
                             type="text" 
@@ -373,7 +384,7 @@ const CardBuilder: React.FC = () => {
                 <CardPreview data={cardData} />
                 <p className="mt-8 text-xs text-gray-400 text-center max-w-xs font-semibold leading-relaxed">
                   The preview above shows exactly what users will see at <br/>
-                  <span className="text-indigo-600">{window.location.host}/card/{cardData.slug}</span>
+                  <span className="text-indigo-600">{baseHost}/card/{cardData.slug}</span>
                 </p>
               </div>
             </div>

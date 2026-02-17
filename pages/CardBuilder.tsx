@@ -9,6 +9,7 @@ import { db } from '../services/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 
 const CardBuilder: React.FC = () => {
+  const hasGeminiKey = !!process.env.GEMINI_API_KEY;
   const [cardData, setCardData] = useState<CardData>(DEFAULT_CARD_DATA);
   const [isGeneratingBio, setIsGeneratingBio] = useState(false);
   const [activeTab, setActiveTab] = useState<'content' | 'design' | 'social'>('content');
@@ -25,6 +26,9 @@ const CardBuilder: React.FC = () => {
   };
 
   const handleAiBio = async () => {
+    if (!hasGeminiKey) {
+      return;
+    }
     setIsGeneratingBio(true);
     const newBio = await generateBio(
       cardData.name, 
@@ -209,14 +213,20 @@ const CardBuilder: React.FC = () => {
                       <div className="space-y-2 relative">
                         <div className="flex justify-between items-center">
                           <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Professional Bio</label>
-                          <button 
-                            onClick={handleAiBio}
-                            disabled={isGeneratingBio}
-                            className="text-xs flex items-center gap-1.5 text-indigo-600 font-bold hover:text-indigo-700 transition disabled:opacity-50 bg-indigo-50 px-4 py-2 rounded-full"
-                          >
-                            <svg className={`w-3.5 h-3.5 ${isGeneratingBio ? 'animate-spin' : ''}`} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-                            Refine with AI
-                          </button>
+                          {hasGeminiKey ? (
+                            <button 
+                              onClick={handleAiBio}
+                              disabled={isGeneratingBio}
+                              className="text-xs flex items-center gap-1.5 text-indigo-600 font-bold hover:text-indigo-700 transition disabled:opacity-50 bg-indigo-50 px-4 py-2 rounded-full"
+                            >
+                              <svg className={`w-3.5 h-3.5 ${isGeneratingBio ? 'animate-spin' : ''}`} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                              Refine with AI
+                            </button>
+                          ) : (
+                            <span className="text-[10px] font-bold text-gray-300 italic">
+                              AI bio helper disabled (no Gemini API key)
+                            </span>
+                          )}
                         </div>
                         <textarea 
                           rows={3}

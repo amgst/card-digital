@@ -4,6 +4,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { Navbar, Footer } from '../components/Layout';
 import { CardPreview } from '../components/CardPreview';
 import { ShareModal } from '../components/ShareModal';
+import { useAuth } from '../contexts/AuthContext';
 import { CardData, SocialLink } from '../types';
 import { DEFAULT_CARD_DATA, SOCIAL_PLATFORMS, THEMES } from '../constants';
 import { generateBio } from '../services/geminiService';
@@ -12,6 +13,7 @@ import { db } from '../services/firebase';
 const CardBuilder: React.FC = () => {
   const hasGeminiKey = !!process.env.GEMINI_API_KEY;
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const baseHost = typeof window !== 'undefined' ? window.location.host : 'your-domain.com';
   const [cardData, setCardData] = useState<CardData>(DEFAULT_CARD_DATA);
   const [isGeneratingBio, setIsGeneratingBio] = useState(false);
@@ -64,6 +66,11 @@ const CardBuilder: React.FC = () => {
   };
 
   const handlePublish = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     if (!cardData.slug) {
       alert('Please enter a custom link (slug) first!');
       return;
@@ -71,7 +78,12 @@ const CardBuilder: React.FC = () => {
 
     setIsSaving(true);
     try {
-      await setDoc(doc(db, 'cards', cardData.slug), cardData);
+      await setDoc(doc(db, 'cards', cardData.slug), {
+        ...cardData,
+        ownerUid: user.uid,
+        ownerEmail: user.email ?? '',
+        updatedAt: new Date().toISOString(),
+      });
       setShowShareModal(true);
     } catch (error) {
       console.error('Error saving card: ', error);
@@ -121,6 +133,14 @@ const CardBuilder: React.FC = () => {
               start networking better.
             </p>
             <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
+              {!loading && !user && (
+                <button
+                  onClick={() => navigate('/login')}
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3.5 font-bold text-white shadow-sm transition hover:bg-indigo-700 sm:w-auto sm:px-10 sm:py-4"
+                >
+                  Login to Save Card
+                </button>
+              )}
               <button
                 onClick={handleViewPublic}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-indigo-600 bg-white px-6 py-3.5 font-bold text-indigo-600 shadow-sm transition hover:bg-indigo-50 sm:w-auto sm:px-10 sm:py-4"
@@ -381,7 +401,7 @@ const CardBuilder: React.FC = () => {
                 <div className="flex flex-col items-stretch justify-between gap-4 border-t border-gray-100 bg-gray-50 p-4 sm:gap-6 sm:p-6 md:flex-row md:items-center md:p-8">
                   <div className="flex items-center gap-2 text-sm font-bold tracking-tight text-gray-400">
                     <div className="h-2.5 w-2.5 rounded-full bg-green-500 shadow-sm shadow-green-200" />
-                    READY TO LAUNCH
+                    {user ? `SIGNED IN AS ${user.email ?? 'ACCOUNT OWNER'}` : 'LOGIN REQUIRED TO PUBLISH'}
                   </div>
                   <button
                     onClick={handlePublish}

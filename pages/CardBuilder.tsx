@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, limit, query, setDoc, where } from 'firebase/firestore';
 import { Navbar, Footer } from '../components/Layout';
 import { CardPreview } from '../components/CardPreview';
 import { ShareModal } from '../components/ShareModal';
@@ -21,6 +21,8 @@ const CardBuilder: React.FC = () => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [viewMode, setViewMode] = useState<'builder' | 'public'>('builder');
+  const [isLoadingOwnedCard, setIsLoadingOwnedCard] = useState(false);
+  const [hasLoadedOwnedCard, setHasLoadedOwnedCard] = useState(false);
 
   const updateField = (field: keyof CardData, value: any) => {
     if (field === 'slug') {
@@ -28,6 +30,57 @@ const CardBuilder: React.FC = () => {
     }
     setCardData(prev => ({ ...prev, [field]: value }));
   };
+
+  useEffect(() => {
+    const loadOwnedCard = async () => {
+      if (loading) {
+        return;
+      }
+
+      if (!user) {
+        setHasLoadedOwnedCard(false);
+        setIsLoadingOwnedCard(false);
+        setCardData(DEFAULT_CARD_DATA);
+        return;
+      }
+
+      setIsLoadingOwnedCard(true);
+
+      try {
+        const cardsRef = collection(db, 'cards');
+        const ownerUidQuery = query(cardsRef, where('ownerUid', '==', user.uid), limit(1));
+        let snapshot = await getDocs(ownerUidQuery);
+
+        if (snapshot.empty && user.email) {
+          const ownerEmailQuery = query(cardsRef, where('ownerEmail', '==', user.email), limit(1));
+          snapshot = await getDocs(ownerEmailQuery);
+        }
+
+        if (!snapshot.empty) {
+          const nextCard = snapshot.docs[0].data() as Partial<CardData>;
+          setCardData({
+            ...DEFAULT_CARD_DATA,
+            ...nextCard,
+            socialLinks: Array.isArray(nextCard.socialLinks) ? nextCard.socialLinks : DEFAULT_CARD_DATA.socialLinks,
+          });
+        } else {
+          setCardData({
+            ...DEFAULT_CARD_DATA,
+            email: user.email ?? DEFAULT_CARD_DATA.email,
+          });
+        }
+      } catch (error) {
+        console.error('Error loading owned card:', error);
+      } finally {
+        setIsLoadingOwnedCard(false);
+        setHasLoadedOwnedCard(true);
+      }
+    };
+
+    if (!hasLoadedOwnedCard || user) {
+      void loadOwnedCard();
+    }
+  }, [hasLoadedOwnedCard, loading, user]);
 
   const handleAiBio = async () => {
     if (!hasGeminiKey) {
@@ -149,6 +202,11 @@ const CardBuilder: React.FC = () => {
                 View My Public Card
               </button>
             </div>
+            {!loading && user && isLoadingOwnedCard && (
+              <p className="mt-4 text-sm font-medium text-gray-400">
+                Loading your saved card details...
+              </p>
+            )}
           </div>
         </section>
 

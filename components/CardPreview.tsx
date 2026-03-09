@@ -9,6 +9,65 @@ interface CardPreviewProps {
   isStandalone?: boolean;
 }
 
+const SocialIcon: React.FC<{ platform: string }> = ({ platform }) => {
+  const key = platform.toLowerCase();
+
+  switch (key) {
+    case 'linkedin':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2.01 2.01 0 0 0 3.25 5c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2ZM20.75 13.05c0-3.26-1.74-4.78-4.05-4.78-1.87 0-2.7 1.03-3.17 1.75V8.5h-3.38V20h3.38v-6.02c0-1.59.3-3.12 2.27-3.12 1.94 0 1.97 1.81 1.97 3.22V20h3.38v-6.95Z" />
+        </svg>
+      );
+    case 'twitter':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.9 2H22l-6.77 7.73L23.2 22h-6.25l-4.9-6.95L5.96 22H2.85l7.24-8.27L1 2h6.4l4.43 6.28L18.9 2Zm-1.1 18h1.73L6.44 3.9H4.6L17.8 20Z" />
+        </svg>
+      );
+    case 'instagram':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      );
+    case 'github':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 .5A12 12 0 0 0 8.2 23.9c.6.12.82-.26.82-.58v-2.1c-3.33.73-4.03-1.41-4.03-1.41-.55-1.37-1.33-1.73-1.33-1.73-1.1-.74.08-.73.08-.73 1.2.08 1.83 1.24 1.83 1.24 1.08 1.82 2.84 1.3 3.53 1 .1-.78.42-1.3.76-1.6-2.66-.3-5.47-1.3-5.47-5.86 0-1.3.47-2.37 1.24-3.2-.12-.3-.54-1.54.12-3.2 0 0 1-.33 3.3 1.22a11.7 11.7 0 0 1 6 0c2.3-1.55 3.3-1.22 3.3-1.22.66 1.66.24 2.9.12 3.2.77.83 1.24 1.9 1.24 3.2 0 4.57-2.82 5.55-5.5 5.85.43.37.82 1.1.82 2.22v3.3c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z" />
+        </svg>
+      );
+    case 'youtube':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M23.5 6.2a3 3 0 0 0-2.1-2.12C19.55 3.5 12 3.5 12 3.5s-7.55 0-9.4.58A3 3 0 0 0 .5 6.2 31.8 31.8 0 0 0 0 12a31.8 31.8 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.12c1.85.58 9.4.58 9.4.58s7.55 0 9.4-.58a3 3 0 0 0 2.1-2.12A31.8 31.8 0 0 0 24 12a31.8 31.8 0 0 0-.5-5.8ZM9.75 15.7V8.3L16.25 12l-6.5 3.7Z" />
+        </svg>
+      );
+    case 'facebook':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M13.5 22v-8h2.7l.4-3h-3.1V9.08c0-.87.24-1.46 1.5-1.46H17V4.93c-.37-.05-1.64-.13-3.12-.13-3.08 0-5.18 1.88-5.18 5.33V11H6v3h2.7v8h4.8Z" />
+        </svg>
+      );
+    case 'tiktok':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M16.5 3c.2 1.7 1.17 3.27 2.62 4.27A7.6 7.6 0 0 0 22 8v3.2a10.9 10.9 0 0 1-3.98-.76v5.67A5.62 5.62 0 1 1 12.4 10.5c.3 0 .6.03.88.08v3.28a2.4 2.4 0 1 0 1.52 2.25V3h1.7Z" />
+        </svg>
+      );
+    case 'whatsapp':
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.5 3.5A11.82 11.82 0 0 0 1.58 17.7L0 24l6.46-1.54A11.82 11.82 0 0 0 24 12c0-3.2-1.24-6.2-3.5-8.5Zm-8.46 18.46c-1.85 0-3.66-.5-5.23-1.45l-.37-.22-3.83.91.91-3.73-.24-.38A9.93 9.93 0 1 1 12.04 21.96Zm5.44-7.44c-.3-.15-1.76-.87-2.03-.97-.27-.1-.46-.15-.66.15-.2.3-.76.97-.93 1.17-.17.2-.35.22-.65.08-.3-.15-1.27-.47-2.42-1.5a8.99 8.99 0 0 1-1.67-2.08c-.18-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.58-.91-2.17-.24-.57-.48-.5-.66-.51h-.56c-.2 0-.52.08-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.1 4.48.71.3 1.27.48 1.7.61.72.23 1.37.2 1.88.12.58-.09 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.08-.12-.28-.2-.58-.35Z" />
+        </svg>
+      );
+    default:
+      return <span className="text-[10px] font-bold">{platform.substring(0, 2).toUpperCase()}</span>;
+  }
+};
+
 export const CardPreview: React.FC<CardPreviewProps> = ({ data, isStandalone = false }) => {
   const navigate = useNavigate();
   const cardUrl =
@@ -163,7 +222,9 @@ export const CardPreview: React.FC<CardPreviewProps> = ({ data, isStandalone = f
                     className="group flex h-11 w-11 cursor-pointer items-center justify-center rounded-2xl border border-gray-100 bg-gray-50 text-gray-600 shadow-sm transition hover:bg-indigo-600 hover:text-white sm:h-12 sm:w-12"
                     title={link.platform}
                    >
-                      <span className="text-xs font-bold group-hover:scale-110 transition">{link.platform.substring(0, 2).toUpperCase()}</span>
+                      <span className="transition group-hover:scale-110">
+                        <SocialIcon platform={link.platform} />
+                      </span>
                    </a>
                  ))}
                </div>

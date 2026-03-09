@@ -59,15 +59,14 @@ const PublicCard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-0 md:p-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-0 md:p-8">
       <div className="w-full max-w-md bg-white min-h-screen md:min-h-[auto] md:rounded-[3rem] shadow-2xl overflow-hidden relative border border-gray-100">
         <CardPreview data={cardData} isStandalone={true} />
-        
-        <div className="absolute bottom-4 left-0 right-0 text-center pb-safe">
-           <a href="/" className="inline-block px-4 py-1 bg-white/80 backdrop-blur-sm rounded-full text-[10px] font-bold text-gray-400 hover:text-indigo-600 transition border border-gray-100 shadow-sm">
-             Made with TheCard Digital
-           </a>
-        </div>
+      </div>
+      <div className="w-full max-w-md px-4 py-4 text-center md:absolute md:bottom-12 md:left-1/2 md:-translate-x-1/2">
+        <a href="/" className="inline-block rounded-full border border-gray-100 bg-white/80 px-4 py-1 text-[10px] font-bold text-gray-400 shadow-sm backdrop-blur-sm transition hover:text-indigo-600">
+          Made with TheCard Digital
+        </a>
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ export const Footer: React.FC = () => (
           <span className="text-xl font-bold font-outfit">TheCard</span>
         </div>
         <p className="max-w-md text-sm text-gray-500">
-          Create and share your digital card with one simple link.
+          Build one Instagram-ready bio link page for your profile, contacts, and social destinations.
         </p>
       </div>
       <div className="mt-8 pt-8 border-t border-gray-200 text-center text-gray-400 text-xs">

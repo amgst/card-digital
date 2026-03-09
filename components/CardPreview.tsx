@@ -92,7 +92,7 @@ export const CardPreview: React.FC<CardPreviewProps> = ({ data, isStandalone = f
 
     const shareData = {
       title: data.name ? `${data.name} on TheCard` : 'My digital card',
-      text: data.name ? `Check out ${data.name}'s digital card.` : 'Check out my digital card.',
+      text: data.name ? `Check out ${data.name}'s Instagram card.` : 'Check out my Instagram card.',
       url: cardUrl,
     };
 
@@ -170,7 +170,7 @@ export const CardPreview: React.FC<CardPreviewProps> = ({ data, isStandalone = f
 
           <div className="mt-6 w-full space-y-5 sm:mt-8 sm:space-y-6">
              <div className="px-2 text-center text-sm leading-relaxed text-gray-600">
-              {data.bio || "Building the future, one connection at a time."}
+              {data.bio || "Tap through from Instagram to explore my links, offers, and contact details."}
             </div>
 
             <div className="space-y-3">
@@ -242,7 +242,7 @@ export const CardPreview: React.FC<CardPreviewProps> = ({ data, isStandalone = f
                onClick={() => navigate('/')}
                className="mt-2 text-xs font-bold text-indigo-600 bg-white border border-indigo-100 px-4 py-2 rounded-full shadow-sm"
              >
-                Create Your Own Card
+                Create Your Instagram Card
              </button>
            )}
         </div>

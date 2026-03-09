@@ -178,12 +178,12 @@ const CardBuilder: React.FC = () => {
         <section className="border-b border-gray-100 bg-gradient-to-b from-indigo-50/50 to-transparent py-12 md:py-24">
           <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
             <h1 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 font-outfit sm:text-5xl md:mb-6 md:text-7xl">
-              Your Professional <br className="hidden sm:block" />
-              <span className="text-indigo-600">Digital Identity</span>
+              Your Instagram <br className="hidden sm:block" />
+              <span className="text-indigo-600">Link in Bio Card</span>
             </h1>
             <p className="mx-auto mb-8 max-w-2xl text-base text-gray-600 sm:text-lg md:mb-10 md:text-xl">
               Create a custom link at <span className="font-bold text-indigo-600">{baseHost}/card/</span> and
-              start networking better.
+              turn your Instagram profile traffic into calls, clicks, and saved contacts.
             </p>
             <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
               {!loading && !user && (
@@ -239,7 +239,7 @@ const CardBuilder: React.FC = () => {
                   {activeTab === 'content' && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300 sm:space-y-8">
                       <div className="space-y-3">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Custom Card Link</label>
+                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Instagram Bio Link</label>
                         <div className="flex flex-col items-stretch shadow-sm sm:flex-row">
                           <div className="flex items-center rounded-t-2xl border border-gray-200 bg-gray-100 px-4 py-3 text-sm font-bold text-gray-500 select-none sm:rounded-l-2xl sm:rounded-tr-none sm:border-r-0 sm:py-0">
                             {baseHost}/card/
@@ -252,7 +252,7 @@ const CardBuilder: React.FC = () => {
                             placeholder="your-name"
                           />
                         </div>
-                        <p className="px-1 text-[10px] font-medium italic text-gray-400">Choose a unique name that represents you.</p>
+                        <p className="px-1 text-[10px] font-medium italic text-gray-400">Choose the link you want to place in your Instagram bio.</p>
                       </div>
 
                       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -341,7 +341,7 @@ const CardBuilder: React.FC = () => {
 
                       <div className="relative space-y-2">
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Professional Bio</label>
+                          <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Instagram Bio Summary</label>
                           {hasGeminiKey ? (
                             <button
                               onClick={handleAiBio}
@@ -369,7 +369,7 @@ const CardBuilder: React.FC = () => {
                   {activeTab === 'social' && (
                     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <h3 className="text-xl font-bold text-gray-900 font-outfit sm:text-2xl">Connect Socials</h3>
+                        <h3 className="text-xl font-bold text-gray-900 font-outfit sm:text-2xl">Instagram Link Targets</h3>
                         <button
                           onClick={addSocialLink}
                           className="rounded-2xl bg-indigo-50 px-5 py-3 text-sm font-bold text-indigo-600 shadow-sm transition hover:bg-indigo-100"
@@ -415,7 +415,7 @@ const CardBuilder: React.FC = () => {
 
                       {cardData.socialLinks.length === 0 && (
                         <div className="rounded-[2.5rem] border-2 border-dashed border-gray-100 bg-gray-50/30 py-16 text-center sm:py-20">
-                          <p className="font-medium text-gray-400">No links added yet. Let&apos;s get social!</p>
+                          <p className="font-medium text-gray-400">No links added yet. Add the destinations you want Instagram visitors to open.</p>
                         </div>
                       )}
                     </div>
@@ -474,7 +474,7 @@ const CardBuilder: React.FC = () => {
                     ) : (
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
                     )}
-                    {isSaving ? 'Publishing...' : 'Publish to wbify.com'}
+                    {isSaving ? 'Publishing...' : 'Publish My Instagram Card'}
                   </button>
                 </div>
               </div>
@@ -487,7 +487,7 @@ const CardBuilder: React.FC = () => {
                 </div>
                 <CardPreview data={cardData} />
                 <p className="mt-5 max-w-xs text-center text-xs font-semibold leading-relaxed text-gray-400 sm:mt-8">
-                  The preview above shows exactly what users will see at <br />
+                  The preview above shows exactly what Instagram visitors will see at <br />
                   <span className="break-all text-indigo-600">{baseHost}/card/{cardData.slug}</span>
                 </p>
               </div>

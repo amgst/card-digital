@@ -12,8 +12,8 @@ export const DEFAULT_CARD_DATA = {
   location: "San Francisco, CA",
   themeColor: "#4F46E5",
   secondaryColor: "#111827",
-  profileImage: "https://picsum.photos/seed/profile/400/400",
-  bannerImage: "https://picsum.photos/seed/banner/800/400",
+  profileImage: "",
+  bannerImage: "",
   socialLinks: [
     { id: '1', platform: 'LinkedIn', url: 'https://linkedin.com' },
     { id: '2', platform: 'Twitter', url: 'https://twitter.com' },

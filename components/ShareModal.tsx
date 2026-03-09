@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import QRCode from 'qrcode';
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -8,10 +9,46 @@ interface ShareModalProps {
 }
 
 export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, slug }) => {
-  if (!isOpen) return null;
-
   const origin = typeof window !== 'undefined' ? window.location.origin : '';
   const fullUrl = `${origin}/card/${slug}`;
+  const [qrCodeSrc, setQrCodeSrc] = useState('');
+
+  useEffect(() => {
+    let active = true;
+
+    if (!isOpen || !slug) {
+      setQrCodeSrc('');
+      return () => {
+        active = false;
+      };
+    }
+
+    QRCode.toDataURL(fullUrl, {
+      width: 256,
+      margin: 1,
+      color: {
+        dark: '#4F46E5',
+        light: '#FFFFFF',
+      },
+    })
+      .then(url => {
+        if (active) {
+          setQrCodeSrc(url);
+        }
+      })
+      .catch(error => {
+        console.error('Failed to generate QR code:', error);
+        if (active) {
+          setQrCodeSrc('');
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [fullUrl, isOpen, slug]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
@@ -26,9 +63,17 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, slug })
 
           <div className="bg-indigo-50 p-6 rounded-3xl mb-6 inline-block border border-indigo-100 group">
             <div className="w-48 h-48 bg-white p-4 border border-gray-100 rounded-2xl flex items-center justify-center shadow-inner">
-               <svg width="100%" height="100%" viewBox="0 0 24 24" fill="#4F46E5" className="group-hover:scale-105 transition duration-500">
-                  <path d="M3 3h6v6H3V3zm12 0h6v6h-6V3zM3 15h6v6H3v-6zm12 0h6v6h-6v-6zM5 5v2h2V5H5zm12 0v2h2V5h-2zM5 17v2h2v-2H5zm12 0v2h2v-2h-2zM9 3h2v2H9V3zm0 4h2v2H9V7zm2-2h2v2h-2V5zm2-2h2v2h-2V3zm0 4h2v2h-2V7zm2-2h2v2h-2V5zM3 9h2v2H3V9zm4 0h2v2H7V9zm2 2h2v2H9v-2zm2-2h2v2h-2V9zm2 2h2v2h-2v-2zm2-2h2v2h-2V9zm2 2h2v2h-2v-2zM9 13h2v2H9v-2zm2 2h2v2h-2v-2zm2-2h2v2h-2v-2zm2 2h2v2h-2v-2zm2-2h2v2h-2v-2z"/>
-               </svg>
+              {qrCodeSrc ? (
+                <img
+                  src={qrCodeSrc}
+                  alt={`QR code for ${fullUrl}`}
+                  className="h-full w-full rounded-xl object-contain transition duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="text-xs font-bold uppercase tracking-widest text-gray-300">
+                  Generating QR
+                </div>
+              )}
             </div>
           </div>
 
